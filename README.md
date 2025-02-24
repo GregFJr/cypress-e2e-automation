@@ -77,9 +77,6 @@ The test suite uses **fixtures** to load dynamic test data from `cypress/fixture
 4. Push to your branch (`git push origin feature-name`)
 5. Open a Pull Request
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
 ---
 Made with ❤️ using Cypress 🚀
 
