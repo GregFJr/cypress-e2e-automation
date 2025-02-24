@@ -1,0 +1,17 @@
+{
+  "email": "testing123@gmail.com",
+  "invalid_email": "testing.com",
+  "password": "password1234",
+  "full_name": "John Doe",
+  "first_name": "John",
+  "last_name": "Doe",
+  "company": "Test Corp",
+  "address": "1234 Random St",
+  "country": "United States",
+  "state": "PA",
+  "city": "Philadelphia",
+  "zip": "55555",
+  "mobile": "111 111 1111",
+  "card_number": "1234 5678 9101 1123",
+  "cvc": "123"
+}
