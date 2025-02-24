@@ -10,6 +10,7 @@ describe("User Checkout", () => {
     cy.visit("/");
 
     cy.get('@formData').then((formData) => {
+      
       const rngMonth = Math.floor(Math.random() * 12) + 1;
       const rngDay = Math.floor(Math.random() * 31) + 1; 
       

@@ -1,68 +1,50 @@
 const timestamp = Date.now();
 const email = `testuser${timestamp}@gmail.com`;
-const password = 'password1234'
-const testForm = {
-    fullName: 'Test Name',
-    firstName: 'Test',
-    lastName: 'Name',
-    company: 'The Company',
-    address: '0101 Test Blvd',
-    country: 'United States', 
-    state: 'Arizona',
-    city: 'Phoenix',
-    zipcode: '55555',
-    mobile: '555-555-5555'
 
+describe("Create an Accouunt", () => {
+  beforeEach(() => {
+    cy.fixture("formData").as("formData");
+  });
+  it("Should signup and create an account", () => {
+    cy.get("@formData").then((formData) => {
+      cy.visit("/");
 
-}
-const dates = {
-    days: 27,
-    months: 9,
-    years: '1990',
-}
+      const typeInput = (selector, value) => cy.get(selector).type(value);
+      const typeSelect = (selector, value) => cy.get(selector).select(value);
 
-describe('Create an Accouunt', () => {
-    it('Should signup and create an account', () => {
-        cy.visit('/');
+      cy.get('.navbar-nav a[href="/login"]').click();
 
-        const typeInput = (selector, value) => cy.get(selector).type(value);
-        const typeSelect = (selector, value) => cy.get(selector).select(value);
+      //Initial Signup
+      typeInput('input[data-qa="signup-name"]', formData.full_name);
+      typeInput('input[data-qa="signup-email"]', email);
+      cy.get('button[data-qa="signup-button"]').click();
 
-        cy.get('.navbar-nav a[href="/login"]').click();
-        //Initial Signup
-        typeInput('input[data-qa="signup-name"]', testForm.fullName)
-        typeInput('input[data-qa="signup-email"]', email);
-        cy.get('button[data-qa="signup-button"]').click();
+      //Account Information
+      cy.get('input[value="Mr"]').click();
+      typeInput('form[action="/signup"] input[data-qa="password"]',formData.password);
+      typeSelect('.form-group select[data-qa="days"]', formData.days);
+      typeSelect('.form-group select[data-qa="months"]', formData.months);
+      typeSelect('.form-group select[data-qa="years"]', formData.years);
 
-        //Account Information
-        cy.get('input[value="Mr"]').click();
-        typeInput('form[action="/signup"] input[data-qa="password"]', password);
-        typeSelect('.form-group select[data-qa="days"]', dates.days);
-        typeSelect('.form-group select[data-qa="months"]', dates.months);
-        typeSelect('.form-group select[data-qa="years"]', dates.years);
+      //Promo Newsletter Options
+      cy.get('.checker input[name="newsletter"]').should("be.visible").check();
+      cy.get('.checker input[name="optin"]').should("be.visible").check();
 
-        //Promo Newsletter Options
-        cy.get('.checker input[name="newsletter"]').should('be.visible').check();
-        cy.get('.checker input[name="optin"]').should('be.visible').check();
+      //Address Information
+      typeInput('.required input[data-qa="first_name"]', formData.first_name);
+      typeInput('.required input[data-qa="last_name"]', formData.last_name);
+      typeInput('.form-group input[data-qa="company"]', formData.country);
+      typeInput('.required input[data-qa="address"]', formData.address);
+      typeSelect('.required select[data-qa="country"]', formData.country);
+      typeInput('.required input[data-qa="state"]', formData.state);
+      typeInput('.required input[data-qa="city"]', formData.city);
+      typeInput('.required input[data-qa="zipcode"]', formData.zip);
+      typeInput('.required input[data-qa="mobile_number"]', formData.mobile);
+      cy.get('button[data-qa="create-account"]').click();
 
-        //Address Information
-        typeInput('.required input[data-qa="first_name"]', testForm.firstName);
-        typeInput('.required input[data-qa="last_name"]', testForm.lastName);
-        typeInput('.form-group input[data-qa="company"]', testForm.country)
-        typeInput('.required input[data-qa="address"]', testForm.address);
-        typeSelect('.required select[data-qa="country"]', testForm.country);
-        typeInput('.required input[data-qa="state"]', testForm.state);
-        typeInput('.required input[data-qa="city"]', testForm.city);
-        typeInput('.required input[data-qa="zipcode"]', testForm.zipcode);
-        typeInput('.required input[data-qa="mobile_number"]', testForm.mobile);
-        cy.get('button[data-qa="create-account"]').click();
-
-        //Verify Account was created
-        cy.url().should('include', 'account_created');
-        cy.contains('Account Created').should('be.visible');
-
-
-
-
-    }) 
-})
+      //Verify Account was created
+      cy.url().should("include", "account_created");
+      cy.contains("Account Created").should("be.visible");
+    });
+  });
+});
